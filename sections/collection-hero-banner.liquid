@@ -1,0 +1,854 @@
+{%- liquid
+  assign target_collection = section.settings.collection
+  assign target_url = section.settings.button_link | default: target_collection.url | default: '#'
+  assign banner_title = section.settings.title
+  if banner_title == blank and target_collection != blank
+    assign banner_title = target_collection.title
+  endif
+  if banner_title == blank
+    assign banner_title = 'Collection'
+  endif
+-%}
+
+{%- style -%}
+  #CollectionHero-{{ section.id }} {
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    margin-bottom: {{ section.settings.gap_bottom | default: 12 }}px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color | default: '#1a1a1a' }};
+  }
+
+  #CollectionHero-{{ section.id }} .collection-hero-banner__media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  #CollectionHero-{{ section.id }} .collection-hero-banner__media img,
+  #CollectionHero-{{ section.id }} .collection-hero-banner__media svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover !important;
+    object-position: {{ section.settings.image_position | default: 'center center' }} !important;
+    display: block;
+  }
+
+  #CollectionHero-{{ section.id }} .collection-hero-banner__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: {{ section.settings.overlay_color | default: '#000000' }};
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .collection-hero-banner__content-wrapper {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: var(--page-width, 1200px);
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+
+  /* Desktop heights */
+  @media screen and (min-width: 750px) {
+    #CollectionHero-{{ section.id }} {
+      {% if section.settings.desktop_height == '100vh' %}
+        min-height: 100vh;
+      {% elsif section.settings.desktop_height == '80vh' %}
+        min-height: 80vh;
+      {% elsif section.settings.desktop_height == '60vh' %}
+        min-height: 60vh;
+      {% elsif section.settings.desktop_height == '40vh' %}
+        min-height: 40vh;
+      {% elsif section.settings.desktop_height == 'custom' %}
+        min-height: {{ section.settings.custom_desktop_height }}px;
+      {% elsif section.settings.desktop_height == 'adapt' and section.settings.image != blank %}
+        min-height: auto;
+        aspect-ratio: {{ section.settings.image.aspect_ratio }};
+      {% else %}
+        min-height: 85vh;
+      {% endif %}
+    }
+
+    .collection-hero-banner__media .mobile-only-img {
+      display: none !important;
+    }
+    .collection-hero-banner__media .desktop-only-img {
+      display: block !important;
+    }
+  }
+
+  /* Mobile heights */
+  @media screen and (max-width: 749px) {
+    #CollectionHero-{{ section.id }} {
+      margin-bottom: {{ section.settings.mobile_gap_bottom | default: section.settings.gap_bottom | default: 8 }}px;
+      {% if section.settings.mobile_height == '100vh' %}
+        min-height: calc(100svh - 60px);
+      {% elsif section.settings.mobile_height == '80vh' %}
+        min-height: 80svh;
+      {% elsif section.settings.mobile_height == '60vh' %}
+        min-height: 60svh;
+      {% elsif section.settings.mobile_height == '40vh' %}
+        min-height: 40svh;
+      {% elsif section.settings.mobile_height == 'custom' %}
+        min-height: {{ section.settings.custom_mobile_height }}px;
+      {% elsif section.settings.mobile_height == 'adapt' and section.settings.image_mobile != blank %}
+        min-height: auto;
+        aspect-ratio: {{ section.settings.image_mobile.aspect_ratio }};
+      {% elsif section.settings.mobile_height == 'adapt' and section.settings.image != blank %}
+        min-height: auto;
+        aspect-ratio: {{ section.settings.image.aspect_ratio }};
+      {% else %}
+        min-height: calc(100svh - 60px);
+      {% endif %}
+    }
+
+    #CollectionHero-{{ section.id }} .collection-hero-banner__media img,
+    #CollectionHero-{{ section.id }} .collection-hero-banner__media svg {
+      object-position: {{ section.settings.mobile_image_position | default: section.settings.image_position | default: 'center center' }} !important;
+    }
+
+    {% if section.settings.image_mobile != blank %}
+      #CollectionHero-{{ section.id }} .collection-hero-banner__media .desktop-only-img {
+        display: none !important;
+      }
+      #CollectionHero-{{ section.id }} .collection-hero-banner__media .mobile-only-img {
+        display: block !important;
+      }
+    {% endif %}
+  }
+
+  /* Alignment */
+  #CollectionHero-{{ section.id }}.collection-hero-banner--align-center {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  #CollectionHero-{{ section.id }} .collection-hero-banner__content-wrapper {
+    align-items: center;
+    text-align: center;
+  }
+
+  #CollectionHero-{{ section.id }}.collection-hero-banner--align-bottom-center {
+    align-items: flex-end;
+    justify-content: center;
+    text-align: center;
+  }
+  #CollectionHero-{{ section.id }}.collection-hero-banner--align-bottom-center .collection-hero-banner__content-wrapper {
+    align-items: center;
+    text-align: center;
+    padding-bottom: 5rem;
+  }
+
+  #CollectionHero-{{ section.id }}.collection-hero-banner--align-bottom-left {
+    align-items: flex-end;
+    justify-content: flex-start;
+    text-align: left;
+  }
+  #CollectionHero-{{ section.id }}.collection-hero-banner--align-bottom-left .collection-hero-banner__content-wrapper {
+    align-items: flex-start;
+    text-align: left;
+    padding-bottom: 5rem;
+  }
+
+  #CollectionHero-{{ section.id }}.collection-hero-banner--align-center-left {
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+  }
+  #CollectionHero-{{ section.id }}.collection-hero-banner--align-center-left .collection-hero-banner__content-wrapper {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  /* Typography */
+  #CollectionHero-{{ section.id }} .collection-hero-banner__title {
+    color: {{ section.settings.text_color | default: '#ffffff' }};
+    font-size: {{ section.settings.mobile_title_size | default: 18 }}px;
+    font-weight: {{ section.settings.heading_weight | default: 700 }};
+    line-height: 1.3;
+    margin: 0;
+    {% if section.settings.uppercase_text %}
+      text-transform: uppercase;
+    {% endif %}
+    letter-spacing: {{ section.settings.letter_spacing | default: 1.5 }}px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  #CollectionHero-{{ section.id }} .collection-hero-banner__subtitle {
+    color: {{ section.settings.text_color | default: '#ffffff' }};
+    font-size: {{ section.settings.mobile_subtitle_size | default: 14 }}px;
+    font-weight: 400;
+    line-height: 1.4;
+    margin-top: 0.8rem;
+    opacity: 0.9;
+    {% if section.settings.uppercase_text %}
+      text-transform: uppercase;
+    {% endif %}
+    letter-spacing: 1px;
+  }
+
+  @media screen and (min-width: 750px) {
+    #CollectionHero-{{ section.id }} .collection-hero-banner__title {
+      font-size: {{ section.settings.desktop_title_size | default: 22 }}px;
+    }
+    #CollectionHero-{{ section.id }} .collection-hero-banner__subtitle {
+      font-size: {{ section.settings.desktop_subtitle_size | default: 15 }}px;
+    }
+  }
+
+  /* Button / Link Styling */
+  #CollectionHero-{{ section.id }} .collection-hero-banner__link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: {{ section.settings.text_color | default: '#ffffff' }};
+    text-decoration: none;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    transition: gap 0.25s ease, opacity 0.25s ease;
+  }
+
+  #CollectionHero-{{ section.id }} .collection-hero-banner__link-arrow:hover {
+    gap: 1.1rem;
+    opacity: 0.85;
+  }
+
+  #CollectionHero-{{ section.id }} .collection-hero-banner__link-arrow svg {
+    width: 1.6rem;
+    height: 1.6rem;
+    fill: currentColor;
+    transition: transform 0.25s ease;
+  }
+
+  #CollectionHero-{{ section.id }} .collection-hero-banner__btn-outline {
+    display: inline-block;
+    margin-top: 1.8rem;
+    padding: 1.2rem 3rem;
+    color: {{ section.settings.text_color | default: '#ffffff' }};
+    background: transparent;
+    border: 1px solid {{ section.settings.text_color | default: '#ffffff' }};
+    border-radius: {{ section.settings.button_border_radius | default: 0 }}px;
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    {% if section.settings.uppercase_text %}
+      text-transform: uppercase;
+    {% endif %}
+    transition: all 0.3s ease;
+  }
+
+  #CollectionHero-{{ section.id }} .collection-hero-banner__btn-outline:hover {
+    background: {{ section.settings.text_color | default: '#ffffff' }};
+    color: #000000;
+  }
+
+  #CollectionHero-{{ section.id }} .collection-hero-banner__btn-solid {
+    display: inline-block;
+    margin-top: 1.8rem;
+    padding: 1.2rem 3rem;
+    color: #000000;
+    background: {{ section.settings.text_color | default: '#ffffff' }};
+    border: 1px solid {{ section.settings.text_color | default: '#ffffff' }};
+    border-radius: {{ section.settings.button_border_radius | default: 0 }}px;
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    {% if section.settings.uppercase_text %}
+      text-transform: uppercase;
+    {% endif %}
+    transition: all 0.3s ease;
+  }
+
+  #CollectionHero-{{ section.id }} .collection-hero-banner__btn-solid:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+
+  /* Clickable full banner link wrapper */
+  #CollectionHero-{{ section.id }} .collection-hero-banner__full-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+    text-decoration: none;
+  }
+{%- endstyle -%}
+
+<div
+  id="CollectionHero-{{ section.id }}"
+  class="collection-hero-banner collection-hero-banner--align-{{ section.settings.content_alignment | default: 'center' }} {{ section.settings.visibility }}"
+>
+  {% if section.settings.link_whole_banner and target_url != blank and target_url != '#' %}
+    <a href="{{ target_url }}" class="collection-hero-banner__full-link" aria-label="{{ banner_title | escape }}"></a>
+  {% endif %}
+
+  <div class="collection-hero-banner__media">
+    {% if section.settings.image != blank %}
+      <img
+        class="desktop-only-img"
+        srcset="
+          {%- if section.settings.image.width >= 375 -%}{{ section.settings.image | image_url: width: 375 }} 375w,{%- endif -%}
+          {%- if section.settings.image.width >= 750 -%}{{ section.settings.image | image_url: width: 750 }} 750w,{%- endif -%}
+          {%- if section.settings.image.width >= 1100 -%}{{ section.settings.image | image_url: width: 1100 }} 1100w,{%- endif -%}
+          {%- if section.settings.image.width >= 1500 -%}{{ section.settings.image | image_url: width: 1500 }} 1500w,{%- endif -%}
+          {%- if section.settings.image.width >= 2000 -%}{{ section.settings.image | image_url: width: 2000 }} 2000w,{%- endif -%}
+          {{ section.settings.image | image_url }} {{ section.settings.image.width }}w
+        "
+        src="{{ section.settings.image | image_url: width: 1500 }}"
+        sizes="100vw"
+        alt="{{ section.settings.image.alt | default: banner_title | escape }}"
+        loading="lazy"
+        width="{{ section.settings.image.width }}"
+        height="{{ section.settings.image.height }}"
+      >
+    {% else %}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+
+    {% if section.settings.image_mobile != blank %}
+      <img
+        class="mobile-only-img"
+        srcset="
+          {%- if section.settings.image_mobile.width >= 375 -%}{{ section.settings.image_mobile | image_url: width: 375 }} 375w,{%- endif -%}
+          {%- if section.settings.image_mobile.width >= 750 -%}{{ section.settings.image_mobile | image_url: width: 750 }} 750w,{%- endif -%}
+          {{ section.settings.image_mobile | image_url }} {{ section.settings.image_mobile.width }}w
+        "
+        src="{{ section.settings.image_mobile | image_url: width: 750 }}"
+        sizes="100vw"
+        alt="{{ section.settings.image_mobile.alt | default: banner_title | escape }}"
+        loading="lazy"
+        width="{{ section.settings.image_mobile.width }}"
+        height="{{ section.settings.image_mobile.height }}"
+      >
+    {% endif %}
+  </div>
+
+  <div class="collection-hero-banner__overlay"></div>
+
+  <div class="collection-hero-banner__content-wrapper">
+    {% if section.settings.button_style == 'link_arrow' %}
+      <h2 class="collection-hero-banner__title">
+        <a href="{{ target_url }}" class="collection-hero-banner__link-arrow">
+          <span>{{ banner_title }}</span>
+          {% if section.settings.subtitle != blank %}
+            <span class="collection-hero-banner__separator">—</span>
+            <span>{{ section.settings.subtitle }}</span>
+          {% endif %}
+          <svg viewBox="0 0 14 10" fill="none" aria-hidden="true" focusable="false">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 01-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z" fill="currentColor"/>
+          </svg>
+        </a>
+      </h2>
+    {% else %}
+      <h2 class="collection-hero-banner__title">{{ banner_title }}</h2>
+      {% if section.settings.subtitle != blank %}
+        <div class="collection-hero-banner__subtitle">{{ section.settings.subtitle }}</div>
+      {% endif %}
+
+      {% if section.settings.button_label != blank %}
+        <div>
+          {% if section.settings.button_style == 'solid' %}
+            <a href="{{ target_url }}" class="collection-hero-banner__btn-solid">
+              {{ section.settings.button_label }}
+            </a>
+          {% elsif section.settings.button_style == 'outline' %}
+            <a href="{{ target_url }}" class="collection-hero-banner__btn-outline">
+              {{ section.settings.button_label }}
+            </a>
+          {% else %}
+            <a href="{{ target_url }}" class="collection-hero-banner__link-arrow" style="margin-top: 1.5rem; font-size: 1.5rem;">
+              <span>{{ section.settings.button_label }}</span>
+              <svg viewBox="0 0 14 10" fill="none" aria-hidden="true" focusable="false">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 01-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z" fill="currentColor"/>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Full Width Hero Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "visibility",
+      "options": [
+        {
+          "value": "always-display",
+          "label": "Always display"
+        },
+        {
+          "value": "desktop-only",
+          "label": "Desktop only"
+        },
+        {
+          "value": "mobile-only",
+          "label": "Mobile only"
+        }
+      ],
+      "default": "always-display",
+      "label": "Visibility"
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile background image",
+      "info": "Optional. Falls back to desktop image if left blank."
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "options": [
+        {
+          "value": "top center",
+          "label": "Top center"
+        },
+        {
+          "value": "top left",
+          "label": "Top left"
+        },
+        {
+          "value": "top right",
+          "label": "Top right"
+        },
+        {
+          "value": "center center",
+          "label": "Center center"
+        },
+        {
+          "value": "center left",
+          "label": "Center left"
+        },
+        {
+          "value": "center right",
+          "label": "Center right"
+        },
+        {
+          "value": "bottom center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom right",
+          "label": "Bottom right"
+        }
+      ],
+      "default": "center center",
+      "label": "Desktop image position"
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_position",
+      "options": [
+        {
+          "value": "top center",
+          "label": "Top center"
+        },
+        {
+          "value": "top left",
+          "label": "Top left"
+        },
+        {
+          "value": "top right",
+          "label": "Top right"
+        },
+        {
+          "value": "center center",
+          "label": "Center center"
+        },
+        {
+          "value": "center left",
+          "label": "Center left"
+        },
+        {
+          "value": "center right",
+          "label": "Center right"
+        },
+        {
+          "value": "bottom center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom right",
+          "label": "Bottom right"
+        }
+      ],
+      "default": "center center",
+      "label": "Mobile image position"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Image overlay opacity",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section background color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "header",
+      "content": "Collection & Links"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Custom Link URL",
+      "info": "Optional. Overrides the collection URL if provided."
+    },
+    {
+      "type": "checkbox",
+      "id": "link_whole_banner",
+      "default": true,
+      "label": "Make entire banner clickable"
+    },
+    {
+      "type": "header",
+      "content": "Content & Typography"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Custom Title",
+      "info": "Leave blank to automatically use the selected collection title."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subtitle",
+      "label": "Subtitle / Promo Text",
+      "default": "shop 3, get 1 free"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button / Link Label",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "options": [
+        {
+          "value": "link_arrow",
+          "label": "Inline text link with arrow (Reference style)"
+        },
+        {
+          "value": "outline",
+          "label": "Outlined button"
+        },
+        {
+          "value": "solid",
+          "label": "Solid button"
+        },
+        {
+          "value": "standalone_arrow",
+          "label": "Button text with arrow below"
+        }
+      ],
+      "default": "link_arrow",
+      "label": "Style"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom Center"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "center-left",
+          "label": "Center Left"
+        }
+      ],
+      "default": "center",
+      "label": "Content alignment"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text & Button color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase_text",
+      "default": false,
+      "label": "Uppercase text"
+    },
+    {
+      "type": "range",
+      "id": "desktop_title_size",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop title size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mobile_title_size",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile title size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_subtitle_size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop subtitle size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_subtitle_size",
+      "min": 11,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile subtitle size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Letter spacing",
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Section Dimensions"
+    },
+    {
+      "type": "select",
+      "id": "desktop_height",
+      "options": [
+        {
+          "value": "100vh",
+          "label": "Full screen (100vh)"
+        },
+        {
+          "value": "80vh",
+          "label": "Large (80vh)"
+        },
+        {
+          "value": "60vh",
+          "label": "Medium (60vh)"
+        },
+        {
+          "value": "40vh",
+          "label": "Small (40vh)"
+        },
+        {
+          "value": "adapt",
+          "label": "Adapt to image ratio"
+        },
+        {
+          "value": "custom",
+          "label": "Custom pixels"
+        }
+      ],
+      "default": "100vh",
+      "label": "Desktop height"
+    },
+    {
+      "type": "range",
+      "id": "custom_desktop_height",
+      "min": 300,
+      "max": 1000,
+      "step": 10,
+      "unit": "px",
+      "label": "Custom desktop height",
+      "default": 650
+    },
+    {
+      "type": "select",
+      "id": "mobile_height",
+      "options": [
+        {
+          "value": "100vh",
+          "label": "Full screen (100vh)"
+        },
+        {
+          "value": "80vh",
+          "label": "Large (80vh)"
+        },
+        {
+          "value": "60vh",
+          "label": "Medium (60vh)"
+        },
+        {
+          "value": "40vh",
+          "label": "Small (40vh)"
+        },
+        {
+          "value": "adapt",
+          "label": "Adapt to image ratio"
+        },
+        {
+          "value": "custom",
+          "label": "Custom pixels"
+        }
+      ],
+      "default": "100vh",
+      "label": "Mobile height"
+    },
+    {
+      "type": "range",
+      "id": "custom_mobile_height",
+      "min": 250,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "label": "Custom mobile height",
+      "default": 500
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing / Gap"
+    },
+    {
+      "type": "range",
+      "id": "gap_bottom",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom gap / spacing (Desktop)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap_bottom",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Bottom gap / spacing (Mobile)",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Full Width Hero Banner",
+      "settings": {
+        "desktop_height": "100vh",
+        "mobile_height": "100vh",
+        "content_alignment": "center",
+        "button_style": "link_arrow",
+        "subtitle": "shop 3, get 1 free",
+        "uppercase_text": false,
+        "text_color": "#ffffff",
+        "overlay_opacity": 10
+      }
+    }
+  ]
+}
+{% endschema %}

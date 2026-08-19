@@ -1,0 +1,84 @@
+{
+  "name": "Footer",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "link_about": {
+          "type": "link",
+          "settings": {
+            "title": "ABOUT",
+            "url": ""
+          }
+        },
+        "link_stockists": {
+          "type": "link",
+          "settings": {
+            "title": "ALL PRODUCTS",
+            "url": "/collections/all"
+          }
+        },
+        "link_care": {
+          "type": "link",
+          "settings": {
+            "title": "CUSTOMER CARE",
+            "url": "/pages/contact"
+          }
+        },
+        "link_instagram": {
+          "type": "link",
+          "settings": {
+            "title": "INSTAGRAM",
+            "url": "https://www.instagram.com/bala.kidsbrand/"
+          }
+        }
+      },
+      "block_order": [
+        "link_about",
+        "link_stockists",
+        "link_care",
+        "link_instagram"
+      ],
+      "settings": {
+        "show_top_divider": true,
+        "show_middle_divider": true,
+        "show_bottom_divider": true,
+        "divider_color": "#e5e5e5",
+        "show_newsletter": true,
+        "newsletter_heading": "SUBSCRIBE",
+        "newsletter_subtext": "BE THE FIRST TO FIND OUT ABOUT OUR LATEST COLLECTIONS,\nFUTURE RELEASES AND SPECIAL OFFERS.",
+        "newsletter_placeholder": "EMAIL",
+        "heading_size": 18,
+        "subtext_size": 12,
+        "menu": "",
+        "menu_font_size": 14,
+        "custom_copyright": "© BÁLÁ",
+        "copyright_font_size": 11,
+        "show_payment": false,
+        "show_policy": false,
+        "custom_colors_background": "#ffffff",
+        "heading_color": "#111111",
+        "subtext_color": "#333333",
+        "border_color": "#111111",
+        "input_bg_color": "#ffffff",
+        "placeholder_color": "#666666",
+        "button_bg_color": "#ffffff",
+        "button_hover_bg_color": "#f5f5f5",
+        "button_icon_color": "#111111",
+        "menu_text_color": "#111111",
+        "copyright_color": "#888888",
+        "margin_top": 0,
+        "padding_top": 56,
+        "newsletter_padding_bottom": 48,
+        "menu_padding_top": 36,
+        "menu_padding_bottom": 36,
+        "copyright_padding_top": 28,
+        "padding_bottom": 28
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}
