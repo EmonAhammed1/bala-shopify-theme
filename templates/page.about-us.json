@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -31,55 +40,20 @@
         "secondary_button_label": "GET IN TOUCH",
         "secondary_button_link": "/pages/contact",
         "color_scheme": "background-1",
-        "custom_colors_background": "#FFFFFF",
+        "custom_colors_background": "#ffffff",
         "custom_gradient_background": "",
-        "custom_colors_text": "#261D16",
-        "custom_colors_solid_button_background": "#1F1E1D",
-        "custom_colors_solid_button_text": "#FFFFFF",
-        "custom_colors_outline_button": "#1F1E1D",
+        "custom_colors_text": "#261d16",
+        "custom_colors_solid_button_background": "#1f1e1d",
+        "custom_colors_solid_button_text": "#ffffff",
+        "custom_colors_outline_button": "#1f1e1d",
         "max_width": 1300,
         "padding_top": 64,
         "padding_bottom": 64
-      }
-    },
-    "newsletter": {
-      "type": "newsletter",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "title": "Join the Bálá Family",
-            "title_highlight_color": "#1F1E1D",
-            "heading_size": "h2"
-          }
-        },
-        "paragraph": {
-          "type": "paragraph",
-          "settings": {
-            "text": "<p>Be the first to know about our atelier launches, private releases, and stories from Bursa.</p>"
-          }
-        },
-        "email_form": {
-          "type": "email_form",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "heading",
-        "paragraph",
-        "email_form"
-      ],
-      "settings": {
-        "color_scheme": "background-2",
-        "full_width": true,
-        "padding_top": 56,
-        "padding_bottom": 56
       }
     }
   },
   "order": [
     "main",
-    "about_story",
-    "newsletter"
+    "about_story"
   ]
 }
