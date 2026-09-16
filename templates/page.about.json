@@ -1,0 +1,85 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "about_story": {
+      "type": "about-us",
+      "settings": {
+        "image_position": "left",
+        "image_badge": "Bursa Atelier • Developing future collections",
+        "eyebrow": "A Note From Our Founder",
+        "heading": "Hi, I'm Meltem, founder of Bálá.",
+        "paragraph_1": "Creating my own brand has been a dream of mine for years, and these days in Bursa brought that dream one step closer. They were spent sketching future collections, working closely with our atelier, and testing the fabrics, fits and finishes of the pieces we'll soon be launching.",
+        "paragraph_2": "Bálá is deeply personal to me. From the meaning behind its name to our spark symbol, every detail carries a story. My vision is to create thoughtful, comfortable clothing that lets children move freely, be themselves and have room to be little.",
+        "quote_text": "My vision is to create thoughtful, comfortable clothing that lets children move freely, be themselves and have room to be little.",
+        "quote_author": "Meltem, Founder of Bálá",
+        "show_values": true,
+        "value_1_title": "Bursa Atelier",
+        "value_1_desc": "Crafted closely with skilled artisans in our Bursa atelier.",
+        "value_2_title": "Pure Fabrics",
+        "value_2_desc": "Carefully tested organic textures, fits, and premium finishes.",
+        "value_3_title": "Room to Be Little",
+        "value_3_desc": "Freedom of movement for joyful, everyday childhood adventures.",
+        "button_label": "EXPLORE COLLECTIONS",
+        "button_link": "shopify://collections/all",
+        "secondary_button_label": "GET IN TOUCH",
+        "secondary_button_link": "/pages/contact",
+        "color_scheme": "background-1",
+        "custom_colors_background": "#FFFFFF",
+        "custom_gradient_background": "",
+        "custom_colors_text": "#261D16",
+        "custom_colors_solid_button_background": "#1F1E1D",
+        "custom_colors_solid_button_text": "#FFFFFF",
+        "custom_colors_outline_button": "#1F1E1D",
+        "max_width": 1300,
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "title": "Join the Bálá Family",
+            "title_highlight_color": "#1F1E1D",
+            "heading_size": "h2"
+          }
+        },
+        "paragraph": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Be the first to know about our atelier launches, private releases, and stories from Bursa.</p>"
+          }
+        },
+        "email_form": {
+          "type": "email_form",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "paragraph",
+        "email_form"
+      ],
+      "settings": {
+        "color_scheme": "background-2",
+        "full_width": true,
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    }
+  },
+  "order": [
+    "main",
+    "about_story",
+    "newsletter"
+  ]
+}
