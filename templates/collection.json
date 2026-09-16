@@ -23,8 +23,8 @@
       "settings": {
         "products_per_page": 20,
         "columns_desktop": 4,
-        "stretch_cards": false,
-        "image_ratio": "adapt",
+        "stretch_cards": true,
+        "image_ratio": "portrait",
         "show_secondary_image": true,
         "badges": "regular",
         "show_vendor": false,

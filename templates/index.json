@@ -158,7 +158,7 @@
         "featured_collection_JiXQzz": {
           "type": "featured_collection",
           "settings": {
-            "collection": "frontpage",
+            "collection": "t-shirts-tops",
             "custom_title": ""
           }
         },
@@ -186,14 +186,14 @@
         "featured_collection_h3R4Jd": {
           "type": "featured_collection",
           "settings": {
-            "collection": "pants",
+            "collection": "pants-sets",
             "custom_title": ""
           }
         },
         "featured_collection_YBWQN6": {
           "type": "featured_collection",
           "settings": {
-            "collection": "dress",
+            "collection": "dresses",
             "custom_title": ""
           }
         }
